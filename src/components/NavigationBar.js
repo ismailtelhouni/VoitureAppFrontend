@@ -1,17 +1,16 @@
 import React from 'react'
 import { Nav, Navbar } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
 export const NavigationBar = () => {
     return (
         <Navbar bg="dark" variant="dark">
-            <Navbar.Brand href="/">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Tata_Tamo_Racemo.jpg" width="25" height="25" />
-            </Navbar.Brand>
+            <Link to={""} className='navbar-brand'>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Tata_Tamo_Racemo.jpg" alt='logo' width="25" height="25" />
+            </Link>
             <Nav className="mr-auto">
-                <Nav.Link href="#"> Ajouter Voiture</Nav.Link>
-                <Nav.Link href="#">
-                    Liste Voitures
-                </Nav.Link>
+                <Link to={"/add"} className='nav-link'> Ajouter Voiture </Link>
+                <Link to={"/list"} className='nav-link'> Liste Voitures </Link>
             </Nav>
         </Navbar>
     )
