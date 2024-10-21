@@ -19,6 +19,7 @@ function App() {
               <Routes>
                 <Route path="/" exact element={<Bienvenue />} />
                 <Route path="/add" exact element={<Voiture />} />
+                <Route path="/edit/:id" exact element={<Voiture />}/>
                 <Route path="/list" exact element={<VoitureListe />} />
               </Routes>
             </Col>
