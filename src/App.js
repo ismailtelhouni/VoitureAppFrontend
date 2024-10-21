@@ -1,24 +1,30 @@
-import logo from './logo.svg';
 import './App.css';
-import Button from 'react-bootstrap/Button';
+import { Bienvenue } from './components/Bienvenue';
+import { Footer } from './components/Footer';
 import { NavigationBar } from './components/NavigationBar';
-import { Container, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
+import { Voiture } from './components/Voiture';
+import { VoitureListe } from './components/VoitureListe';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 function App() {
+  const marginTop = { marginTop:"20px"}
   return (
-    <div className="App">
+    <Router className="App bg-secondary">
       <NavigationBar />
       <Container>
-      <Row>
-        <div className="bg-light p-5 rounded-lg">
-          <h1>Hello World!</h1>
-          <p>
-            Ceci est le corps de la page.
-          </p>
-        </div>
-      </Row>
-    </Container>
-    </div>
+        <Row>
+          <Col lg={12} style={marginTop} >
+            <Switch> 
+              <Route path="/" exact component={Bienvenue}/> 
+              <Route path="/add" exact component={Voiture}/> 
+              <Route path="/list" exact component={VoitureListe}/> 
+            </Switch>
+          </Col>
+        </Row>
+      </Container>
+      <Footer/>
+    </Router>
   );
 }
 
