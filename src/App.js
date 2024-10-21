@@ -5,26 +5,28 @@ import { NavigationBar } from './components/NavigationBar';
 import { Col, Container, Row } from 'react-bootstrap';
 import { Voiture } from './components/Voiture';
 import { VoitureListe } from './components/VoitureListe';
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
-  const marginTop = { marginTop:"20px"}
+  const marginTop = { marginTop: "20px" }
   return (
-    <Router className="App bg-secondary">
-      <NavigationBar />
-      <Container>
-        <Row>
-          <Col lg={12} style={marginTop} >
-            <Switch> 
-              <Route path="/" exact component={Bienvenue}/> 
-              <Route path="/add" exact component={Voiture}/> 
-              <Route path="/list" exact component={VoitureListe}/> 
-            </Switch>
-          </Col>
-        </Row>
-      </Container>
-      <Footer/>
-    </Router>
+    <div className='App bg-secondary'>
+      <Router>
+        <NavigationBar />
+        <Container >
+          <Row>
+            <Col lg={12} style={marginTop} >
+              <Routes>
+                <Route path="/" exact element={<Bienvenue />} />
+                <Route path="/add" exact element={<Voiture />} />
+                <Route path="/list" exact element={<VoitureListe />} />
+              </Routes>
+            </Col>
+          </Row>
+        </Container>
+        <Footer />
+      </Router>
+    </div>
   );
 }
 

@@ -8,7 +8,7 @@ export const Footer = () => {
             <Container>
                 <Col lg={12} className="text-center text-white">
                     <div>
-                        {fullYear}-{fullYear+1}, All Rights Reserved by Master MIOLA
+                        {fullYear}-{fullYear + 1}, All Rights Reserved by Master MIOLA
                     </div>
                 </Col>
             </Container>
