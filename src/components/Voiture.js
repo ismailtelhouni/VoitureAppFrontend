@@ -4,8 +4,12 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Button, Card, Col, Form, Row } from 'react-bootstrap'
 import { MyToast } from './MyToast';
+import { useParams } from 'react-router-dom';
 
 export const Voiture = () => {
+    const { id } = useParams();
+    const [isSave, setIsSave] = useState(true);
+    const [message, setMessage] = useState("Voiture Enregistrée avec succés.");
     const [voiture, setVoiture] = useState({
         marque: '',
         modele: '',
@@ -39,6 +43,44 @@ export const Voiture = () => {
             });
 
     }, [])
+    useEffect(()=>{
+        if(id){
+            setIsSave(false)
+            setMessage("Voiture Modifiée avec succés.")
+            axios.get("http://localhost:8081/api/voitures/"+id)
+            .then(response => {
+                const voitureData = {
+                    marque: response.data.marque,
+                    modele: response.data.modele,
+                    couleur: response.data.couleur,
+                    annee: response.data.annee,
+                    prix: response.data.prix,
+                    proprietaire: {
+                        id: response.data._embedded.proprietaire.id
+                    },
+                    immatricule: response.data.immatricule
+                };
+                setVoiture(voitureData)
+                console.log('Success:', voitureData);
+                console.log('Success:', response.data);
+            })
+            .catch(error => {
+                if (error.response) {
+                    // La requête a été faite, et le serveur a répondu avec un code de statut hors 2xx
+                    console.error('Server responded with error:', error.response.status);
+                    console.error('Response data:', error.response.data);
+                } else if (error.request) {
+                    // La requête a été faite, mais aucune réponse n'a été reçue
+                    console.error('No response received:', error.request);
+                } else {
+                    // Une erreur est survenue lors de la configuration de la requête
+                    console.error('Error setting up request:', error.message);
+                }
+                console.error('Error details:', error.config);
+            });
+        }
+        console.log("id :"+id)
+    },[id])
     const resetVoitures = () => {
         setVoiture({
             marque: '',
@@ -54,8 +96,8 @@ export const Voiture = () => {
     const submitVoiture = (event) => {
         event.preventDefault();
         console.log(voiture)
-        // Vous pouvez ici envoyer les données à une API, ou les traiter
-        axios.post("http://localhost:8081/api/voitures", voiture)
+        if(isSave){
+            axios.post("http://localhost:8081/api/voitures", voiture)
             .then(response => {
                 if (response.data != null) {
                     setVoiture({
@@ -70,6 +112,24 @@ export const Voiture = () => {
                     setShow(true)
                 }
             })
+        }else{
+            axios.put("http://localhost:8081/api/voitures/"+id, voiture)
+            .then(response => {
+                if (response.data != null) {
+                    setVoiture({
+                        marque: '',
+                        modele: '',
+                        couleur: '',
+                        annee: '',
+                        prix: '',
+                        proprietaire: '',
+                        immatricule: ''
+                    })
+                    setShow(true)
+                }
+            })
+        }
+        // Vous pouvez ici envoyer les données à une API, ou les traiter
     };
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -137,12 +197,12 @@ export const Voiture = () => {
                     </Row>
                 </Card.Body>
                 <Card.Footer style={{ "textAlign": "right" }}>
-                    <Button size="sm" variant="success" type="submit" className='me-2' > <FontAwesomeIcon icon={faSave} /> Submit</Button>
+                    <Button size="sm" variant="success" type="submit" className='me-2' > <FontAwesomeIcon icon={faSave} /> { isSave ? "Submit" : "Update"    } </Button>
                     <Button size="sm" variant="info" type="reset"> <FontAwesomeIcon icon={faUndo} /> Reset</Button>
                 </Card.Footer>
             </Form>
             <div style={{ "display": show ? "block" : "none" }}>
-                <MyToast children={{ show: show, message: "Voiture Enregistrée evec succés.", type: "success" }} handleClose={handleClose} />
+                <MyToast children={{ show: show, message: message, type: "success" }} handleClose={handleClose} />
             </div>
         </Card>
     )
