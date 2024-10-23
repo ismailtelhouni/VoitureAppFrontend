@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom'
 
 export const NavigationBar = () => {
     return (
-        <Navbar bg="dark" variant="dark">
-            <Link to={""} className='navbar-brand'>
+        <Navbar bg="dark" variant="dark" className='ps-5'>
+            <Link to={""} className='navbar-brand ps-5 ms-5'>
                 <img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Tata_Tamo_Racemo.jpg" alt='logo' width="25" height="25" />
             </Link>
             <Nav className="mr-auto">

@@ -1,19 +1,22 @@
-import { faEdit, faList, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faList } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Button, ButtonGroup, Card, Table } from 'react-bootstrap'
-import { MyToast } from './MyToast'
-import { Link } from 'react-router-dom'
+import { Card, Spinner, Table } from 'react-bootstrap'
+import { MyToast } from '../MyToast'
+import { VoitureItem } from './VoitureItem'
 
 export const VoitureListe = () => {
     const [voitures, setVoitures] = useState([]);
     const [show, setShow] = useState(false);
+    const [spinner, setSpinner] = useState(true);
+    const apiUrl = process.env.REACT_APP_API_URL
     useEffect(() => {
-        axios.get('http://localhost:8081/voitures')
+        axios.get(apiUrl+'/voitures')
             .then(response => {
                 setVoitures(response.data)
                 console.log('Success:', response.data);
+                setSpinner(false)
             })
             .catch(error => {
                 if (error.response) {
@@ -30,10 +33,10 @@ export const VoitureListe = () => {
                 console.error('Error details:', error.config);
             });
 
-    }, [])
+    }, [apiUrl])
     const deleteVoiture = (voitureId) => {
         console.log(voitureId)
-        axios.delete("http://localhost:8081/api/voitures/" + voitureId)
+        axios.delete(apiUrl+"/api/voitures/" + voitureId)
             .then(response => {
                 if (response.data != null) {
                     setShow(true)
@@ -61,6 +64,9 @@ export const VoitureListe = () => {
                         </tr>
                     </thead>
                     <tbody>
+                        <tr align="center" style={{ "display": spinner ? "" : "none" }}>
+                            <td colSpan="6"><Spinner animation="border" variant='light' /></td>
+                        </tr>
                         {
                             voitures.length === 0 ?
                                 <tr align="center">
@@ -68,20 +74,7 @@ export const VoitureListe = () => {
                                 </tr>
                                 :
                                 voitures.map((voiture) => (
-                                    <tr key={voiture.id}>
-                                        <td> {voiture.marque} </td>
-                                        <td> {voiture.modele} </td>
-                                        <td> {voiture.couleur} </td>
-                                        <td> {voiture.immatricule} </td>
-                                        <td> {voiture.annee} </td>
-                                        <td> {voiture.prix} </td>
-                                        <td className='d-flex justify-content-center'>
-                                            <ButtonGroup>
-                                                <Link to={"/edit/"+voiture.id} className="btn btn-sm btn-outline-primary"><FontAwesomeIcon icon={faEdit} /></Link>
-                                                <Button size='sm' variant='outline-danger' onClick={() => deleteVoiture(voiture.id)} ><FontAwesomeIcon icon={faTrash} /></Button>
-                                            </ButtonGroup>
-                                        </td>
-                                    </tr>
+                                    <VoitureItem key={voiture.id} voiture={voiture} deleteVoiture={deleteVoiture} />
                                 ))
                         }
                     </tbody>
