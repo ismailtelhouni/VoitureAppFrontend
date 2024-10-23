@@ -21,6 +21,7 @@ export const Voiture = () => {
     });
     const [proprietaires, setProprietaires] = useState([]);
     const [show, setShow] = useState(false);
+    const apiUrl = process.env.REACT_APP_API_URL;
     useEffect(() => {
         axios.get('http://localhost:8081/api/proprietaires')
             .then(response => {
@@ -47,7 +48,7 @@ export const Voiture = () => {
         if(id){
             setIsSave(false)
             setMessage("Voiture Modifiée avec succés.")
-            axios.get("http://localhost:8081/api/voitures/"+id)
+            axios.get(apiUrl+"/api/voitures/"+id)
             .then(response => {
                 const voitureData = {
                     marque: response.data.marque,
@@ -80,7 +81,7 @@ export const Voiture = () => {
             });
         }
         console.log("id :"+id)
-    },[id])
+    },[ id , apiUrl ])
     const resetVoitures = () => {
         setVoiture({
             marque: '',
@@ -97,7 +98,7 @@ export const Voiture = () => {
         event.preventDefault();
         console.log(voiture)
         if(isSave){
-            axios.post("http://localhost:8081/api/voitures", voiture)
+            axios.post(apiUrl+"/api/voitures", voiture)
             .then(response => {
                 if (response.data != null) {
                     setVoiture({
@@ -113,7 +114,7 @@ export const Voiture = () => {
                 }
             })
         }else{
-            axios.put("http://localhost:8081/api/voitures/"+id, voiture)
+            axios.put(apiUrl+"/api/voitures/"+id, voiture)
             .then(response => {
                 if (response.data != null) {
                     setVoiture({

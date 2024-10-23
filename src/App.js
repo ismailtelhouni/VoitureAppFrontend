@@ -4,7 +4,7 @@ import { Footer } from './components/Footer';
 import { NavigationBar } from './components/NavigationBar';
 import { Col, Container, Row } from 'react-bootstrap';
 import { Voiture } from './components/Voiture';
-import { VoitureListe } from './components/VoitureListe';
+import { VoitureListe } from './components/voiture-list/VoitureListe';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
