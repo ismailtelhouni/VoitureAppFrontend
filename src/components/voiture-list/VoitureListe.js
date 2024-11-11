@@ -10,7 +10,9 @@ export const VoitureListe = () => {
     const [voitures, setVoitures] = useState([]);
     const [show, setShow] = useState(false);
     const [spinner, setSpinner] = useState(true);
-    const apiUrl = process.env.REACT_APP_API_URL
+    // const apiUrl = process.env.REACT_APP_API_URL
+    const apiUrl = "http://localhost:8081"
+    // console.log('VoitureListe : ', apiUrl)
     useEffect(() => {
         axios.get(apiUrl+'/voitures')
             .then(response => {

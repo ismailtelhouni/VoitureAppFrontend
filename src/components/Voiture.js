@@ -21,12 +21,13 @@ export const Voiture = () => {
     });
     const [proprietaires, setProprietaires] = useState([]);
     const [show, setShow] = useState(false);
-    const apiUrl = process.env.REACT_APP_API_URL;
+    // const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = "http://localhost:8081";
     useEffect(() => {
         axios.get('http://localhost:8081/api/proprietaires')
             .then(response => {
                 setProprietaires(response.data._embedded.proprietaires)
-                console.log('Success:', response.data._embedded.proprietaires);
+                console.log('Success proprietaire:', response.data._embedded.proprietaires);
             })
             .catch(error => {
                 if (error.response) {
